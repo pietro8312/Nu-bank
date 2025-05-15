@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<p>Arraste a barra</p>
+	<div>
+		<section>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>			
+		</section>
+	</div>
+
+	<style>
+		div{
+			background-color: purple;
+			height: 200px;
+			width: 500px;
+
+			overflow-x: hidden;
+		}
+
+		section{
+			height: 100%;
+			width: 100%;
+			display: grid;
+			grid-template-columns: repeat(5, 200px);
+			grid-template-rows: 100px;
+			align-content: center;
+		}
+
+		i{
+			height: auto;
+			width: auto;
+
+			margin-left: 20px;
+			background-color: black;
+		}
+	</style>
+	<script>
+		const minX = -550; // limite à esquerda (negativo)
+		const maxX = 0;  // limite à direita (positivo)
+
+
+		var lastX;
+		var posiX;
+		var currentX = 0;
+		var div = document.querySelector("div");
+		var i = document.querySelector("i");
+		var section = document.querySelector("section")
+		var drag = false
+
+		div.addEventListener("mousedown", function(event){
+			lastX = event.pageX
+			drag = true
+			div.style.cursor = "grabbing";
+			event.preventDefault();
+		});
+
+		div.addEventListener("mousemove", function(event){
+			if(!drag) return;
+
+			const dist = event.pageX - lastX
+			currentX += dist;
+
+			// Limita o valor entre minX e maxX
+			currentX = Math.max(minX, Math.min(currentX, maxX));
+
+			section.style.transform = `translateX(${currentX}px)`;
+			lastX = event.pageX		
+		});
+
+		div.addEventListener("mouseup", function(){
+			drag = false
+			div.style.cursor = "unset";
+		});
+
+	</script>
+	</body>
+</html>
